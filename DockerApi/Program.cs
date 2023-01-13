@@ -1,6 +1,16 @@
+using DockerApi.Application.Interfaces;
+using DockerApi.Application.Services;
+using DockerApi.Infra.Interfaces;
+using DockerApi.Infra.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
+//Add repository to container
+builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
+
 // Add services to the container.
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

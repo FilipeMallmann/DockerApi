@@ -13,4 +13,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DockerApi.Application\DockerApi.Application.csproj" />
+    <ProjectReference Include="..\DockerApi.Infra\DockerApi.Infra.csproj" />
+  </ItemGroup>
+
 </Project>
