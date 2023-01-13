@@ -1,4 +1,4 @@
-namespace DockerApi.Tests
+namespace DockerApi.Tests.Customer
 {
     public class UnitTest1
     {
