@@ -1,15 +1,18 @@
 using DockerApi.Application.Interfaces;
 using DockerApi.Application.Services;
+using DockerApi.Infra;
 using DockerApi.Infra.Interfaces;
 using DockerApi.Infra.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //Add repository to container
-builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
+
+builder.Services.AddDbContext<DockerApiDbContext>();
 // Add services to the container.
-builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddTransient<ICustomerService, CustomerService>();
 
 
 builder.Services.AddControllers();

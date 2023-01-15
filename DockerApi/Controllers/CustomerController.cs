@@ -32,7 +32,7 @@ namespace DockerApi.Api.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError($"Error while getting comments: {e.Message}");
+                _logger.LogError($"Error while getting customer: {e.Message}");
                 return BadRequest(e.Message);
 
             }
@@ -65,7 +65,7 @@ namespace DockerApi.Api.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError($"Error while creating Comment: {e.Message}");
+                _logger.LogError($"Error while creating customer: {e.Message}");
                 return BadRequest(e.Message);
             }
         }
@@ -79,7 +79,7 @@ namespace DockerApi.Api.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError($"Error while editing Comment: {e.Message}");
+                _logger.LogError($"Error while editing customer: {e.Message}");
                 return BadRequest(e.Message);
             }
         }
@@ -94,7 +94,7 @@ namespace DockerApi.Api.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError($"Error while deleting Comment: {e.Message}");
+                _logger.LogError($"Error while deleting customer: {e.Message}");
                 return BadRequest(e.Message);
             }
         }

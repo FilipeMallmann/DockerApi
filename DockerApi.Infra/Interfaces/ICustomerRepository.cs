@@ -14,6 +14,5 @@ namespace DockerApi.Infra.Interfaces
         Customer Get(Guid id);
         IEnumerable<Customer> GetAll();
         Customer Update(Customer customer);
-        IEnumerable<Customer> GetByPostId(Guid postId);
     }
 }

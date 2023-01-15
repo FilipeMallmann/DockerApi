@@ -1,5 +1,6 @@
 ﻿using DockerApi.Domain.Entities;
 using DockerApi.Infra.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,34 +11,78 @@ namespace DockerApi.Infra.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
+
+        private readonly DockerApiDbContext _dbContext;
+
+        public CustomerRepository(DockerApiDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public Customer Create(Customer customer)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _dbContext.Customers.Add(customer);
+                _dbContext.SaveChanges();
+                return customer;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public bool Delete(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var customer = _dbContext.Customers.FirstOrDefault(f => f.Id == id);
+                _dbContext.Customers.Remove(customer);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Customer Get(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _dbContext.Customers.AsNoTracking().FirstOrDefault(f => f.Id == id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public IEnumerable<Customer> GetAll()
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Customer> GetByPostId(Guid postId)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                return _dbContext.Customers;
+            }
+            catch (Exception)
+            {
+                throw ;
+            }
         }
 
         public Customer Update(Customer customer)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _dbContext.Entry<Customer>(customer).State = EntityState.Modified;
+                _dbContext.SaveChanges();
+                return customer;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

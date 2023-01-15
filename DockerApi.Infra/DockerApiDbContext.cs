@@ -10,11 +10,18 @@ namespace DockerApi.Infra
 {
     public class DockerApiDbContext : DbContext
     {
-        protected DockerApiDbContext() : base()
+        public DockerApiDbContext() 
         {
 
         }
-        
-        DbSet<Customer> Customers { get; set; }
+        public DockerApiDbContext(DbContextOptions<DockerApiDbContext> options) : base(options)
+        {
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("DataSource=Api.db;Cache=Shared");
+        }
+
+       public DbSet<Customer> Customers { get; set; }
     }
 }
