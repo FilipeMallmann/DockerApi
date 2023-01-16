@@ -72,7 +72,7 @@ namespace DockerApi.Infra.Repositories
             {
 
                 _dbContext.Entry(customer).State = EntityState.Modified;
-                _dbContext.SaveChanges();
+                _dbContext.SaveChangesAsync();
                 return customer;
             }
             catch (Exception)

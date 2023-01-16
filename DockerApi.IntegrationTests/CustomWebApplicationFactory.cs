@@ -1,9 +1,6 @@
 ﻿using DockerApi.Infra;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace DockerApi.IntegrationTests
 {
@@ -16,7 +13,7 @@ namespace DockerApi.IntegrationTests
             {
                 var descriptor = services.SingleOrDefault(
                     d => d.ServiceType ==
-                         typeof(DbContextOptions<DockerApiDbContext>));
+                         typeof(DockerApiDbContext));
 
                 services.Remove(descriptor);
 
