@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using DockerApi.Application.Interfaces;
+﻿using DockerApi.Application.Interfaces;
 using DockerApi.Application.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace DockerApi.Api.Controllers
@@ -71,7 +67,7 @@ namespace DockerApi.Api.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        public ActionResult<CustomerFullViewModel> Put([FromRoute][Required] Guid id, [FromBody] CustomerFullViewModel customer)
+        public ActionResult<CustomerFullViewModel> Put([FromRoute][Required] Guid id, [FromBody] CustomerPostViewModel customer)
         {
             try
             {
