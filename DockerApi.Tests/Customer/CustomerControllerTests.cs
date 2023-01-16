@@ -23,6 +23,69 @@ namespace DockerApi.Tests.Customer
         }
 
         [Fact]
+        public void Post_MustReturnError_WhenEmail_IsNull()
+        {
+            //Arrange
+            var customer = new CustomerPostViewModel()
+            {
+                FirstName = "Any string",
+                LastName = "Any string",
+                Password = "Any string",
+
+            };
+            _customerServiceMoq.Create(customer).ReturnsNull();
+
+            //Act
+            var postValidation = _sut.Post(customer);
+            var badRequestResult = Assert.IsType<BadRequestResult>(postValidation.Result);
+
+            //Assert
+            Assert.Equal(badRequestResult.StatusCode, new BadRequestResult().StatusCode);
+        }
+
+        [Fact]
+        public void Post_MustReturnError_WhenLastName_IsNull()
+        {
+            //Arrange
+            var customer = new CustomerPostViewModel()
+            {
+                FirstName = "Any string",
+                Email = "Any string",
+                Password = "Any string",
+
+            };
+            _customerServiceMoq.Create(customer).ReturnsNull();
+
+            //Act
+            var postValidation = _sut.Post(customer);
+            var badRequestResult = Assert.IsType<BadRequestResult>(postValidation.Result);
+
+            //Assert
+            Assert.Equal(badRequestResult.StatusCode, new BadRequestResult().StatusCode);
+        }
+
+        [Fact]
+        public void Post_MustReturnError_WhenFirstName_IsNull()
+        {
+            //Arrange
+            var customer = new CustomerPostViewModel()
+            {
+                LastName = "Any string",
+                Email= "Any string",
+                Password = "Any string",
+
+            };
+            _customerServiceMoq.Create(customer).ReturnsNull();
+
+            //Act
+            var postValidation = _sut.Post(customer);
+            var badRequestResult = Assert.IsType<BadRequestResult>(postValidation.Result);
+
+            //Assert
+            Assert.Equal(badRequestResult.StatusCode, new BadRequestResult().StatusCode);
+        }
+
+        [Fact]
         public void GetAll_Returns_Existing_Customers()
         {
             //Arrange
