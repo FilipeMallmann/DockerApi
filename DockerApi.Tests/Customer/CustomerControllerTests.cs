@@ -15,7 +15,7 @@ namespace DockerApi.Tests.Customer
         private readonly ICustomerService _customerServiceMoq = Substitute.For<ICustomerService>();
         private readonly ILogger<CustomerController> _loggingMoq = Substitute.For<ILogger<CustomerController>>();
 
-        private Fixture _fixture;
+        private readonly Fixture _fixture;
         public CustomerControllerTests()
         {
             _sut = new CustomerController(_loggingMoq, _customerServiceMoq);
@@ -145,7 +145,7 @@ namespace DockerApi.Tests.Customer
             var customerId = Guid.NewGuid();
 
 
-            var expectedCustomer = _fixture.Create<CustomerFullViewModel>();
+            var expectedCustomer = _fixture.Create<CustomerPostViewModel>();
 
             //Act
             _customerServiceMoq.Update(customerId, expectedCustomer).Returns(expectedCustomer);
@@ -162,7 +162,7 @@ namespace DockerApi.Tests.Customer
         {
 
             //Arrange
-            var customerEdit = _fixture.Create<CustomerFullViewModel>();
+            var customerEdit = _fixture.Create<CustomerPostViewModel>();
 
 
             //Act

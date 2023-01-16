@@ -1,11 +1,6 @@
 ﻿using DockerApi.Domain.Entities;
 using DockerApi.Infra.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DockerApi.Infra.Repositories
 {
@@ -67,7 +62,7 @@ namespace DockerApi.Infra.Repositories
             }
             catch (Exception)
             {
-                throw ;
+                throw;
             }
         }
 
@@ -75,7 +70,8 @@ namespace DockerApi.Infra.Repositories
         {
             try
             {
-                _dbContext.Entry<Customer>(customer).State = EntityState.Modified;
+
+                _dbContext.Entry(customer).State = EntityState.Modified;
                 _dbContext.SaveChanges();
                 return customer;
             }

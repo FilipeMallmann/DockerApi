@@ -17,21 +17,25 @@ namespace DockerApi.Application.Services
         public CustomerFullViewModel Create(CustomerPostViewModel customer)
         {
 
-            var customerRecord = new Customer() {
+            var customerRecord = new Customer()
+            {
                 Id = Guid.NewGuid(),
                 Email = customer.Email,
-                FirstName= customer.FirstName,
+                FirstName = customer.FirstName,
                 LastName = customer.LastName,
-                Password = customer.Password};
+                Password = customer.Password
+            };
 
             _customerRepository.Create(customerRecord);
 
-            var createdComment = new CustomerFullViewModel() {
+            var createdComment = new CustomerFullViewModel()
+            {
                 Id = customerRecord.Id,
                 Email = customerRecord.Email,
                 FirstName = customerRecord.FirstName,
                 LastName = customerRecord.LastName,
-                Password = customerRecord.Password };
+                Password = customerRecord.Password
+            };
             return createdComment;
         }
 
@@ -43,7 +47,7 @@ namespace DockerApi.Application.Services
         public IEnumerable<CustomerGetViewModel> GetAll()
         {
             var customerList = _customerRepository.GetAll();
-           
+
             return MapComments(customerList);
         }
 
@@ -57,7 +61,7 @@ namespace DockerApi.Application.Services
                 {
                     Id = customerRecord.Id,
                     FirstName = customerRecord.FirstName,
-                    LastName= customerRecord.LastName,
+                    LastName = customerRecord.LastName,
                     Email = customerRecord.Email
 
                 };
@@ -69,20 +73,20 @@ namespace DockerApi.Application.Services
             }
         }
 
-        public CustomerFullViewModel Update(Guid id, CustomerFullViewModel customer)
+        public CustomerPostViewModel Update(Guid id, CustomerPostViewModel customer)
         {
             var customerRecord = _customerRepository.Get(id);
             if (customerRecord is not null)
             {
-                var updtCustomer = new Customer() {
+                var updtCustomer = new Customer()
+                {
                     Id = customerRecord.Id,
-                    FirstName = customerRecord.FirstName,
-                    LastName = customerRecord.LastName,
-                    Email = customerRecord.Email,
-                    Password = customerRecord.Password
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    Email = customer.Email,
+                    Password = customer.Password
                 };
                 _customerRepository.Update(updtCustomer);
-                customer.Id = customerRecord.Id;
                 customer.Email = customerRecord.Email;
                 customer.FirstName = customerRecord.FirstName;
                 customer.LastName = customerRecord.LastName;
@@ -100,11 +104,12 @@ namespace DockerApi.Application.Services
             var customers = new List<CustomerGetViewModel>();
             foreach (var customer in customertList)
             {
-                customers.Add(new CustomerGetViewModel() { 
-                  Id = customer.Id,
-                  FirstName = customer.FirstName,
-                  LastName= customer.LastName,
-                  Email= customer.Email
+                customers.Add(new CustomerGetViewModel()
+                {
+                    Id = customer.Id,
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    Email = customer.Email
                 });
             }
             return customers;
