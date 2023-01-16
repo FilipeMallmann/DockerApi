@@ -23,6 +23,8 @@ namespace DockerApi.Tests.Customer
         {
             // Arrange
             var customer = _fixture.Create<CustomerPostViewModel>();
+
+
             var customerRecord = _fixture.Create<Domain.Entities.Customer>();
 
             _repository.Create(Arg.Any<Domain.Entities.Customer>()).Returns(customerRecord);
@@ -32,11 +34,9 @@ namespace DockerApi.Tests.Customer
 
             // Assert
             _repository.Received(1).Create(Arg.Any<Domain.Entities.Customer>());
-            Assert.Equal(customerRecord.Id, result.Id);
-            Assert.Equal(customerRecord.Email, result.Email);
-            Assert.Equal(customerRecord.FirstName, result.FirstName);
-            Assert.Equal(customerRecord.LastName, result.LastName);
-            Assert.Equal(customerRecord.Password, result.Password);
+
+            customerRecord.Should().BeEquivalentTo(result);
+
         }
 
         [Fact]
