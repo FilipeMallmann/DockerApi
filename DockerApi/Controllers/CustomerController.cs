@@ -24,7 +24,7 @@ namespace DockerApi.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<CustomerFullViewModel>> GetAll()
+        public ActionResult<IEnumerable<CustomerGetViewModel>> GetAll()
         {
             try
             {
@@ -55,7 +55,7 @@ namespace DockerApi.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<CustomerFullViewModel> Post([FromBody] CustomerFullViewModel customer)
+        public ActionResult<CustomerFullViewModel> Post([FromBody] CustomerPostViewModel customer)
         {
             try
             {

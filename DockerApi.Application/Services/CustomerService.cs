@@ -2,13 +2,7 @@
 using DockerApi.Application.ViewModels;
 using DockerApi.Domain.Entities;
 using DockerApi.Infra.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
 
 namespace DockerApi.Application.Services
 {
@@ -20,7 +14,7 @@ namespace DockerApi.Application.Services
         {
             _customerRepository = customerRepository;
         }
-        public CustomerFullViewModel Create(CustomerFullViewModel customer)
+        public CustomerFullViewModel Create(CustomerPostViewModel customer)
         {
 
             var customerRecord = new Customer() {
@@ -32,7 +26,6 @@ namespace DockerApi.Application.Services
 
             _customerRepository.Create(customerRecord);
 
-            // Consider using the TinyMapper...
             var createdComment = new CustomerFullViewModel() {
                 Id = customerRecord.Id,
                 Email = customerRecord.Email,
@@ -47,27 +40,25 @@ namespace DockerApi.Application.Services
             return _customerRepository.Delete(id);
         }
 
-        public IEnumerable<CustomerFullViewModel> GetAll()
+        public IEnumerable<CustomerGetViewModel> GetAll()
         {
             var customerList = _customerRepository.GetAll();
-            //tinyMapper
            
             return MapComments(customerList);
         }
 
-        public CustomerFullViewModel GetById(Guid id)
+        public CustomerGetViewModel GetById(Guid id)
         {
             var customerRecord = _customerRepository.Get(id);
 
             if (customerRecord is object)
             {
-                var customer = new CustomerFullViewModel()
+                var customer = new CustomerGetViewModel()
                 {
                     Id = customerRecord.Id,
                     FirstName = customerRecord.FirstName,
                     LastName= customerRecord.LastName,
-                    Email = customerRecord.Email,
-                    Password = customerRecord.Password
+                    Email = customerRecord.Email
 
                 };
                 return customer;
@@ -83,14 +74,14 @@ namespace DockerApi.Application.Services
             var customerRecord = _customerRepository.Get(id);
             if (customerRecord is not null)
             {
-                var uptComment = new Customer() {
+                var updtCustomer = new Customer() {
                     Id = customerRecord.Id,
                     FirstName = customerRecord.FirstName,
                     LastName = customerRecord.LastName,
                     Email = customerRecord.Email,
                     Password = customerRecord.Password
                 };
-                _customerRepository.Update(uptComment);
+                _customerRepository.Update(updtCustomer);
                 customer.Id = customerRecord.Id;
                 customer.Email = customerRecord.Email;
                 customer.FirstName = customerRecord.FirstName;
@@ -104,17 +95,16 @@ namespace DockerApi.Application.Services
             }
         }
 
-        private IEnumerable<CustomerFullViewModel> MapComments(IEnumerable<Customer> customertList)
+        private IEnumerable<CustomerGetViewModel> MapComments(IEnumerable<Customer> customertList)
         {
-            var customers = new List<CustomerFullViewModel>();
+            var customers = new List<CustomerGetViewModel>();
             foreach (var customer in customertList)
             {
-                customers.Add(new CustomerFullViewModel() { 
+                customers.Add(new CustomerGetViewModel() { 
                   Id = customer.Id,
                   FirstName = customer.FirstName,
                   LastName= customer.LastName,
-                  Email= customer.Email,
-                  Password= customer.Password
+                  Email= customer.Email
                 });
             }
             return customers;

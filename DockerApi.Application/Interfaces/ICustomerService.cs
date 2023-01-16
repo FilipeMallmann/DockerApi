@@ -9,9 +9,9 @@ namespace DockerApi.Application.Interfaces
 {
     public interface ICustomerService
     {
-       CustomerFullViewModel Create(CustomerFullViewModel comment);
-        CustomerFullViewModel GetById(Guid id);
-        IEnumerable<CustomerFullViewModel> GetAll();
+       CustomerFullViewModel Create(CustomerPostViewModel comment);
+        CustomerGetViewModel GetById(Guid id);
+        IEnumerable<CustomerGetViewModel> GetAll();
         CustomerFullViewModel Update(Guid id, CustomerFullViewModel comment);
         bool Delete(Guid id);
     }

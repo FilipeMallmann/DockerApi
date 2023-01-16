@@ -26,11 +26,11 @@ namespace DockerApi.Tests.Customer
         public void GetAll_Returns_Existing_Customers()
         {
             //Arrange
-            List<CustomerFullViewModel> expected = new();
-            expected.Add(new CustomerFullViewModel() { FirstName = "First_Name1", LastName = "Last_Name", Email = "Email@domain.com", Password = "AnyPass" });
-            expected.Add(new CustomerFullViewModel() { FirstName = "First_Name2", LastName = "Last_Name", Email = "Email@domain.com", Password = "AnyPass" });
-            expected.Add(new CustomerFullViewModel() { FirstName = "First_Name3", LastName = "Last_Name", Email = "Email@domain.com", Password = "AnyPass" });
-            expected.Add(new CustomerFullViewModel() { FirstName = "First_Name4", LastName = "Last_Name", Email = "Email@domain.com", Password = "AnyPass" });
+            List<CustomerGetViewModel> expected = new();
+            expected.Add(new CustomerGetViewModel() { FirstName = "First_Name1", LastName = "Last_Name", Email = "Email@domain.com"});
+            expected.Add(new CustomerGetViewModel() { FirstName = "First_Name2", LastName = "Last_Name", Email = "Email@domain.com"});
+            expected.Add(new CustomerGetViewModel() { FirstName = "First_Name3", LastName = "Last_Name", Email = "Email@domain.com"});
+            expected.Add(new CustomerGetViewModel() { FirstName = "First_Name4", LastName = "Last_Name", Email = "Email@domain.com"});
 
 
             //Act
@@ -39,7 +39,7 @@ namespace DockerApi.Tests.Customer
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
 
             //Assert
-            Assert.Equal(expected.Count, (okResult.Value as List<CustomerFullViewModel>).Count);
+            Assert.Equal(expected.Count, (okResult.Value as List<CustomerGetViewModel>).Count);
 
 
         }
@@ -49,13 +49,12 @@ namespace DockerApi.Tests.Customer
         {
             //Arrange
             var customerId = Guid.NewGuid();
-            var expectedCustomer = new CustomerFullViewModel()
+            var expectedCustomer = new CustomerGetViewModel()
             {
                 Id = customerId,
                 Email = "Any string",
                 FirstName = "Any string",
-                LastName = "Any string",
-                Password = "Any string",
+                LastName = "Any string"
 
             };
             _customerServiceMoq.GetById(customerId).Returns(expectedCustomer);
