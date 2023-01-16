@@ -1,12 +1,11 @@
+using AutoFixture;
 using DockerApi.Api.Controllers;
 using DockerApi.Application.Interfaces;
 using DockerApi.Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
-using System.Security.Cryptography.X509Certificates;
 
 namespace DockerApi.Tests.Customer
 {
@@ -16,23 +15,18 @@ namespace DockerApi.Tests.Customer
         private readonly ICustomerService _customerServiceMoq = Substitute.For<ICustomerService>();
         private readonly ILogger<CustomerController> _loggingMoq = Substitute.For<ILogger<CustomerController>>();
 
-
+        private Fixture _fixture;
         public CustomerControllerTests()
         {
             _sut = new CustomerController(_loggingMoq, _customerServiceMoq);
+            _fixture = new Fixture();
         }
 
         [Fact]
         public void Post_MustReturnError_WhenEmail_IsNull()
         {
             //Arrange
-            var customer = new CustomerPostViewModel()
-            {
-                FirstName = "Any string",
-                LastName = "Any string",
-                Password = "Any string",
-
-            };
+            var customer = _fixture.Create<CustomerPostViewModel>();
             _customerServiceMoq.Create(customer).ReturnsNull();
 
             //Act
@@ -47,13 +41,10 @@ namespace DockerApi.Tests.Customer
         public void Post_MustReturnError_WhenLastName_IsNull()
         {
             //Arrange
-            var customer = new CustomerPostViewModel()
-            {
-                FirstName = "Any string",
-                Email = "Any string",
-                Password = "Any string",
+            var customer = _fixture.Build<CustomerPostViewModel>()
+                .Without(c => c.LastName)
+                .Create();
 
-            };
             _customerServiceMoq.Create(customer).ReturnsNull();
 
             //Act
@@ -68,13 +59,9 @@ namespace DockerApi.Tests.Customer
         public void Post_MustReturnError_WhenFirstName_IsNull()
         {
             //Arrange
-            var customer = new CustomerPostViewModel()
-            {
-                LastName = "Any string",
-                Email= "Any string",
-                Password = "Any string",
-
-            };
+            var customer = _fixture.Build<CustomerPostViewModel>()
+                .Without(c => c.FirstName)
+                .Create();
             _customerServiceMoq.Create(customer).ReturnsNull();
 
             //Act
@@ -89,11 +76,7 @@ namespace DockerApi.Tests.Customer
         public void GetAll_Returns_Existing_Customers()
         {
             //Arrange
-            List<CustomerGetViewModel> expected = new();
-            expected.Add(new CustomerGetViewModel() { FirstName = "First_Name1", LastName = "Last_Name", Email = "Email@domain.com"});
-            expected.Add(new CustomerGetViewModel() { FirstName = "First_Name2", LastName = "Last_Name", Email = "Email@domain.com"});
-            expected.Add(new CustomerGetViewModel() { FirstName = "First_Name3", LastName = "Last_Name", Email = "Email@domain.com"});
-            expected.Add(new CustomerGetViewModel() { FirstName = "First_Name4", LastName = "Last_Name", Email = "Email@domain.com"});
+            var expected = _fixture.CreateMany<CustomerGetViewModel>().ToList();
 
 
             //Act
@@ -112,14 +95,8 @@ namespace DockerApi.Tests.Customer
         {
             //Arrange
             var customerId = Guid.NewGuid();
-            var expectedCustomer = new CustomerGetViewModel()
-            {
-                Id = customerId,
-                Email = "Any string",
-                FirstName = "Any string",
-                LastName = "Any string"
 
-            };
+            var expectedCustomer = _fixture.Create<CustomerGetViewModel>();
             _customerServiceMoq.GetById(customerId).Returns(expectedCustomer);
 
             //Act
@@ -166,14 +143,9 @@ namespace DockerApi.Tests.Customer
         {
             //Arrange
             var customerId = Guid.NewGuid();
-            var expectedCustomer = new CustomerFullViewModel()
-            {
-                Id = customerId,
-                Email = "Any string",
-                FirstName = "Any string",
-                LastName = "Any string",
-                Password = "Any string",
-            };
+
+
+            var expectedCustomer = _fixture.Create<CustomerFullViewModel>();
 
             //Act
             _customerServiceMoq.Update(customerId, expectedCustomer).Returns(expectedCustomer);
@@ -190,13 +162,7 @@ namespace DockerApi.Tests.Customer
         {
 
             //Arrange
-            var customerEdit = new CustomerFullViewModel()
-            {
-                FirstName = "Any value",
-                LastName = "Any value",
-                Email = "Any value",
-                Password = "Any value"
-            };
+            var customerEdit = _fixture.Create<CustomerFullViewModel>();
 
 
             //Act
