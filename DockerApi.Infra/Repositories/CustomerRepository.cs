@@ -62,9 +62,9 @@ namespace DockerApi.Infra.Repositories
         public async Task<IEnumerable<Customer>> GetAllAsync()
         {
             try
-            {
+                {
                 return _dbContext.Customers;
-            }
+                }
             catch (Exception)
             {
                 throw ;
@@ -76,7 +76,7 @@ namespace DockerApi.Infra.Repositories
             try
             {
                 _dbContext.Entry<Customer>(customer).State = EntityState.Modified;
-                await  _dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
                 return customer;
             }
             catch (Exception)
