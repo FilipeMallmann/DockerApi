@@ -9,10 +9,10 @@ namespace DockerApi.Infra.Interfaces
 {
     public interface ICustomerRepository
     {
-        Customer Create(Customer customer);
-        bool Delete(Guid id);
-        Customer Get(Guid id);
-        IEnumerable<Customer> GetAll();
-        Customer Update(Customer customer);
+        Task<Customer> CreateAsync(Customer customer);
+        Task<bool> DeleteAsync(Guid id);
+        Task<Customer> GetAsync(Guid id);
+        Task<IEnumerable<Customer>> GetAllAsync();
+        Task<Customer> UpdateAsync(Customer customer);
     }
 }

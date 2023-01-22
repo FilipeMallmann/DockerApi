@@ -18,12 +18,12 @@ namespace DockerApi.Infra.Repositories
         {
             _dbContext = dbContext;
         }
-        public Customer Create(Customer customer)
+        public async Task<Customer> CreateAsync(Customer customer)
         {
             try
             {
-                _dbContext.Customers.Add(customer);
-                _dbContext.SaveChanges();
+                await _dbContext.Customers.AddAsync(customer);
+                await _dbContext.SaveChangesAsync();
                 return customer;
             }
             catch (Exception)
@@ -32,13 +32,13 @@ namespace DockerApi.Infra.Repositories
             }
         }
 
-        public bool Delete(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             try
             {
                 var customer = _dbContext.Customers.FirstOrDefault(f => f.Id == id);
                 _dbContext.Customers.Remove(customer);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -47,11 +47,11 @@ namespace DockerApi.Infra.Repositories
             }
         }
 
-        public Customer Get(Guid id)
+        public async Task<Customer> GetAsync(Guid id)
         {
             try
             {
-                return _dbContext.Customers.AsNoTracking().FirstOrDefault(f => f.Id == id);
+                return await _dbContext.Customers.AsNoTracking().FirstOrDefaultAsync(f => f.Id == id);
             }
             catch (Exception)
             {
@@ -59,7 +59,7 @@ namespace DockerApi.Infra.Repositories
             }
         }
 
-        public IEnumerable<Customer> GetAll()
+        public async Task<IEnumerable<Customer>> GetAllAsync()
         {
             try
             {
@@ -71,12 +71,12 @@ namespace DockerApi.Infra.Repositories
             }
         }
 
-        public Customer Update(Customer customer)
+        public async Task<Customer> UpdateAsync(Customer customer)
         {
             try
             {
                 _dbContext.Entry<Customer>(customer).State = EntityState.Modified;
-                _dbContext.SaveChanges();
+                await  _dbContext.SaveChangesAsync();
                 return customer;
             }
             catch (Exception)

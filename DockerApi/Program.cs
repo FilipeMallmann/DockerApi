@@ -1,13 +1,16 @@
 using DockerApi.Application.Interfaces;
 using DockerApi.Application.Services;
 using DockerApi.Infra;
+using FluentValidation;
 using DockerApi.Infra.Interfaces;
 using DockerApi.Infra.Repositories;
+using DockerApi.Application.ViewModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //Add repository to container
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+
 
 
 builder.Services.AddDbContext<DockerApiDbContext>();
