@@ -14,9 +14,8 @@ namespace DockerApi.Application.Services
         {
             _customerRepository = customerRepository;
         }
-        public CustomerFullViewModel Create(CustomerPostViewModel customer)
+        public async Task<CustomerFullViewModel> CreateAsync(CustomerPostViewModel customer)
         {
-
             var customerRecord = new Customer() {
                 Id = Guid.NewGuid(),
                 Email = customer.Email,
@@ -24,7 +23,7 @@ namespace DockerApi.Application.Services
                 LastName = customer.LastName,
                 Password = customer.Password};
 
-            _customerRepository.Create(customerRecord);
+            await _customerRepository.CreateAsync(customerRecord);
 
             var createdComment = new CustomerFullViewModel() {
                 Id = customerRecord.Id,
@@ -35,21 +34,21 @@ namespace DockerApi.Application.Services
             return createdComment;
         }
 
-        public bool Delete(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            return _customerRepository.Delete(id);
+            return await _customerRepository.DeleteAsync(id);
         }
 
-        public IEnumerable<CustomerGetViewModel> GetAll()
+        public async Task<IEnumerable<CustomerGetViewModel>> GetAllAsync()
         {
-            var customerList = _customerRepository.GetAll();
+            var customerList = await _customerRepository.GetAllAsync();
            
             return MapComments(customerList);
         }
 
-        public CustomerGetViewModel GetById(Guid id)
+        public async Task<CustomerGetViewModel> GetByIdAsync(Guid id)
         {
-            var customerRecord = _customerRepository.Get(id);
+            var customerRecord = await _customerRepository.GetAsync(id);
 
             if (customerRecord is object)
             {
@@ -69,9 +68,9 @@ namespace DockerApi.Application.Services
             }
         }
 
-        public CustomerFullViewModel Update(Guid id, CustomerFullViewModel customer)
+        public async Task<CustomerFullViewModel> UpdateAsync(Guid id, CustomerFullViewModel customer)
         {
-            var customerRecord = _customerRepository.Get(id);
+            var customerRecord = await _customerRepository.GetAsync(id);
             if (customerRecord is not null)
             {
                 var updtCustomer = new Customer() {
@@ -81,7 +80,7 @@ namespace DockerApi.Application.Services
                     Email = customerRecord.Email,
                     Password = customerRecord.Password
                 };
-                _customerRepository.Update(updtCustomer);
+               await _customerRepository.UpdateAsync(updtCustomer);
                 customer.Id = customerRecord.Id;
                 customer.Email = customerRecord.Email;
                 customer.FirstName = customerRecord.FirstName;

@@ -23,7 +23,7 @@ namespace DockerApi.Tests.Customer
         }
 
         [Fact]
-        public void Post_MustReturnError_WhenEmail_IsNull()
+        public async Task Post_MustReturnError_WhenEmail_IsNull()
         {
             //Arrange
             var customer = new CustomerPostViewModel()
@@ -33,10 +33,10 @@ namespace DockerApi.Tests.Customer
                 Password = "Any string",
 
             };
-            _customerServiceMoq.Create(customer).ReturnsNull();
+            _customerServiceMoq.CreateAsync(customer).ReturnsNull();
 
             //Act
-            var postValidation = _sut.Post(customer);
+            var postValidation = await _sut.PostAsync(customer);
             var badRequestResult = Assert.IsType<BadRequestResult>(postValidation.Result);
 
             //Assert
@@ -44,7 +44,7 @@ namespace DockerApi.Tests.Customer
         }
 
         [Fact]
-        public void Post_MustReturnError_WhenLastName_IsNull()
+        public async Task Post_MustReturnError_WhenLastName_IsNull()
         {
             //Arrange
             var customer = new CustomerPostViewModel()
@@ -54,10 +54,10 @@ namespace DockerApi.Tests.Customer
                 Password = "Any string",
 
             };
-            _customerServiceMoq.Create(customer).ReturnsNull();
+            _customerServiceMoq.CreateAsync(customer).ReturnsNull();
 
             //Act
-            var postValidation = _sut.Post(customer);
+            var postValidation = await _sut.PostAsync(customer);
             var badRequestResult = Assert.IsType<BadRequestResult>(postValidation.Result);
 
             //Assert
@@ -65,7 +65,7 @@ namespace DockerApi.Tests.Customer
         }
 
         [Fact]
-        public void Post_MustReturnError_WhenFirstName_IsNull()
+        public async Task Post_MustReturnError_WhenFirstName_IsNull()
         {
             //Arrange
             var customer = new CustomerPostViewModel()
@@ -75,10 +75,10 @@ namespace DockerApi.Tests.Customer
                 Password = "Any string",
 
             };
-            _customerServiceMoq.Create(customer).ReturnsNull();
+            _customerServiceMoq.CreateAsync(customer).ReturnsNull();
 
             //Act
-            var postValidation = _sut.Post(customer);
+            var postValidation = await _sut.PostAsync(customer);
             var badRequestResult = Assert.IsType<BadRequestResult>(postValidation.Result);
 
             //Assert
@@ -86,7 +86,7 @@ namespace DockerApi.Tests.Customer
         }
 
         [Fact]
-        public void GetAll_Returns_Existing_Customers()
+        public async Task GetAll_Returns_Existing_Customers()
         {
             //Arrange
             List<CustomerGetViewModel> expected = new();
@@ -97,8 +97,8 @@ namespace DockerApi.Tests.Customer
 
 
             //Act
-            _customerServiceMoq.GetAll().Returns(expected);
-            var result = _sut.GetAll();
+             _customerServiceMoq.GetAllAsync().Returns(expected);
+            var result = await _sut.GetAllAsync();
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
 
             //Assert
@@ -108,7 +108,7 @@ namespace DockerApi.Tests.Customer
         }
 
         [Fact]
-        public void GetById_Returns_Existing_Customer()
+        public async Task GetById_Returns_Existing_Customer()
         {
             //Arrange
             var customerId = Guid.NewGuid();
@@ -120,10 +120,10 @@ namespace DockerApi.Tests.Customer
                 LastName = "Any string"
 
             };
-            _customerServiceMoq.GetById(customerId).Returns(expectedCustomer);
+            _customerServiceMoq.GetByIdAsync(customerId).Returns(expectedCustomer);
 
             //Act
-            var actualCustomer = _sut.Get(customerId);
+            var actualCustomer = await _sut.GetAsync(customerId);
             var okObjectResult = Assert.IsType<OkObjectResult>(actualCustomer.Result);
 
             //Assert
@@ -132,37 +132,37 @@ namespace DockerApi.Tests.Customer
         }
 
         [Fact]
-        public void Get_MustReturnNull_WhenCustomer_DontExist()
+        public async Task Get_MustReturnNull_WhenCustomer_DontExist()
         {
             //Arrange
-            _customerServiceMoq.GetById(Arg.Any<Guid>()).ReturnsNull();
+            _customerServiceMoq.GetByIdAsync(Arg.Any<Guid>()).ReturnsNull();
 
             //Act
-            var customer = _sut.Get(Guid.NewGuid())?.Value;
+            var customer = await _sut.GetAsync(Guid.NewGuid());
 
             //Assert
-            Assert.Null(customer);
+            Assert.Null(customer.Value);
 
         }
 
 
         [Fact]
-        public void Delete_MustReturnFalse_WhenCustomer_DontExist()
+        public async Task Delete_MustReturnFalse_WhenCustomer_DontExist()
         {
             //Arrange
             var customerId = Guid.NewGuid();
 
-            _customerServiceMoq.Delete(customerId).Returns(false);
+            _customerServiceMoq.DeleteAsync(customerId).Returns(false);
 
             //Act
-            var customer = _sut.Delete(customerId);
+            var customer = await _sut.DeleteAsync(customerId);
             var notFound = Assert.IsType<NotFoundObjectResult>(customer.Result);
             //Assert
             Assert.Equal(new NotFoundResult().StatusCode, notFound.StatusCode);
 
         }
         [Fact]
-        public void Edit_MustReturnNewCustomer_WhenCustomer_Exist()
+        public async Task Edit_MustReturnNewCustomer_WhenCustomer_Exist()
         {
             //Arrange
             var customerId = Guid.NewGuid();
@@ -176,8 +176,8 @@ namespace DockerApi.Tests.Customer
             };
 
             //Act
-            _customerServiceMoq.Update(customerId, expectedCustomer).Returns(expectedCustomer);
-            var actualPost = _sut.Put(customerId, expectedCustomer);
+            _customerServiceMoq.UpdateAsync(customerId, expectedCustomer).Returns(expectedCustomer);
+            var actualPost = await _sut.PutAsync(customerId, expectedCustomer);
             var okObjectResult = Assert.IsType<OkObjectResult>(actualPost.Result);
 
             //Assert
@@ -186,7 +186,7 @@ namespace DockerApi.Tests.Customer
         }
 
         [Fact]
-        public void Edit_MustReturnNull_WhenCustomer_NotExist()
+        public async Task Edit_MustReturnNull_WhenCustomer_NotExist()
         {
 
             //Arrange
@@ -200,11 +200,11 @@ namespace DockerApi.Tests.Customer
 
 
             //Act
-            _customerServiceMoq.Update(Arg.Any<Guid>(), customerEdit).ReturnsNull();
-            var customer = _sut.Put(Guid.NewGuid(), customerEdit)?.Value;
+            _customerServiceMoq.UpdateAsync(Arg.Any<Guid>(), customerEdit).ReturnsNull();
+            var customer = await _sut.PutAsync(Guid.NewGuid(), customerEdit);
 
             //Assert
-            Assert.Null(customer);
+            Assert.Null(customer.Value);
         }
 
     }

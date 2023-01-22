@@ -24,11 +24,11 @@ namespace DockerApi.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<CustomerGetViewModel>> GetAll()
+        public async Task<ActionResult<IEnumerable<CustomerGetViewModel>>> GetAllAsync()
         {
             try
             {
-                return Ok(_service.GetAll());
+                return Ok(await _service.GetAllAsync());
             }
             catch (Exception e)
             {
@@ -39,11 +39,11 @@ namespace DockerApi.Api.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public ActionResult<CustomerFullViewModel> Get([FromRoute] Guid id)
+        public async Task<ActionResult<CustomerFullViewModel>> GetAsync([FromRoute] Guid id)
         {
             try
             {
-                var customer = _service.GetById(id);
+                var customer = await _service.GetByIdAsync(id);
                 if (customer is not null) return Ok(customer);
                 return NotFound();
             }
@@ -55,11 +55,11 @@ namespace DockerApi.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<CustomerFullViewModel> Post([FromBody] CustomerPostViewModel customer)
+        public async Task<ActionResult<CustomerFullViewModel>> PostAsync([FromBody] CustomerPostViewModel customer)
         {
             try
             {
-                var newComment = _service.Create(customer);
+                var newComment = await _service.CreateAsync(customer);
                 if (newComment is null) return BadRequest();
                 return Ok(newComment);
             }
@@ -71,11 +71,11 @@ namespace DockerApi.Api.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        public ActionResult<CustomerFullViewModel> Put([FromRoute][Required] Guid id, [FromBody] CustomerFullViewModel customer)
+        public async Task<ActionResult<CustomerFullViewModel>> PutAsync([FromRoute][Required] Guid id, [FromBody] CustomerFullViewModel customer)
         {
             try
             {
-                return Ok(_service.Update(id, customer));
+                return Ok(await _service.UpdateAsync(id, customer));
             }
             catch (Exception e)
             {
@@ -85,11 +85,11 @@ namespace DockerApi.Api.Controllers
         }
 
         [HttpDelete("{id:guid}")]
-        public ActionResult<bool> Delete([FromRoute][Required] Guid id)
+        public async Task <ActionResult<bool>> DeleteAsync([FromRoute][Required] Guid id)
         {
             try
             {
-                var result = _service.Delete(id);
+                var result = await _service.DeleteAsync(id);
                 return result ? Ok(true) : NotFound(false);
             }
             catch (Exception e)
