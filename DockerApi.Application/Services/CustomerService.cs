@@ -1,7 +1,7 @@
 ﻿using DockerApi.Application.Interfaces;
 using DockerApi.Application.ViewModels;
 using DockerApi.Domain.Entities;
-using DockerApi.Infra.Interfaces;
+using DockerApi.Domain.Interfaces;
 
 
 namespace DockerApi.Application.Services
