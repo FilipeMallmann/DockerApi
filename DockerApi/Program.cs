@@ -2,7 +2,7 @@ using DockerApi.Application.Interfaces;
 using DockerApi.Application.Services;
 using DockerApi.Infra;
 using FluentValidation;
-using DockerApi.Infra.Interfaces;
+using DockerApi.Domain.Interfaces;
 using DockerApi.Infra.Repositories;
 using DockerApi.Application.ViewModels;
 
