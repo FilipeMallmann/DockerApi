@@ -1,11 +1,9 @@
-﻿using DockerApi.Domain.Entities;
+using DockerApi.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace DockerApi.Infra.Interfaces
+namespace DockerApi.Domain.Interfaces
 {
     public interface ICustomerRepository
     {

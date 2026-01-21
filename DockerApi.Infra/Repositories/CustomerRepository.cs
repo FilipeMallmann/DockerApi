@@ -1,5 +1,5 @@
 ﻿using DockerApi.Domain.Entities;
-using DockerApi.Infra.Interfaces;
+using DockerApi.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
